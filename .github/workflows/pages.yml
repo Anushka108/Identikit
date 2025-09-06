@@ -23,17 +23,20 @@ jobs:
           cache-dependency-path: identikit-frontend/package-lock.json
 
       - name: Build Vite app
-        working-directory: identikit-frontend
         run: |
+          cd identikit-frontend
           npm ci
           npm run build
-          # SPA deep-link fallback (very important on Pages)
-          cp dist/index.html dist/404.html
+          cp dist/index.html dist/404.html    # SPA fallback
+          echo "== Dist tree =="
+          ls -al dist
+          echo "== Assets tree =="
+          ls -al dist/assets
 
-      - name: Upload artifact (dist at repo root path)
+      - name: Upload artifact (publish dist/)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: identikit-frontend/dist
+          path: ./identikit-frontend/dist     # MUST contain index.html and assets/ at its root
 
   deploy:
     runs-on: ubuntu-latest
