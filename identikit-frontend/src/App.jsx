@@ -44,7 +44,7 @@ function App() {
       element:<><Navb/><SecAnalysis/></>
     }
     
-  ]
+  ],
 { basename: "/identikit" })
 
   return (
