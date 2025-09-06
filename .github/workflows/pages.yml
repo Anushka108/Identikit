@@ -15,21 +15,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: identikit-frontend/package-lock.json
-      - name: Build
+
+      - name: Build Vite app
         working-directory: identikit-frontend
         run: |
           npm ci
           npm run build
-          cp dist/index.html dist/404.html   # SPA fallback
-      - name: Upload artifact
+          # SPA deep-link fallback (very important on Pages)
+          cp dist/index.html dist/404.html
+
+      - name: Upload artifact (dist at repo root path)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: identikit-frontend/dist      # MUST point to the folder that contains index.html
+          path: identikit-frontend/dist
 
   deploy:
     runs-on: ubuntu-latest
